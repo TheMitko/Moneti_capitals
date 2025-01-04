@@ -16,6 +16,10 @@ let isACapitalBeingAttacked = false;
 let atacker = 0;
 let defender = 0;
 let defenderMoveMade = false;
+let pawnsHaveBeenSentOver=false;
+let startSentOver = false;
+let pawnsSentOver=0;
+let pawnsGrrr=0;
 
 const players = {
   1: { color: "blue", remainingPawnsToMove: gameData.pawnsCount, remainingPawns: gameData.pawnsCount, countries: playersCountries[1], capitalsNum: 4 },
@@ -73,9 +77,7 @@ function changeCountryOwnership(country, newOwner) {
         circle.setAttribute("fill", newOwner === 1 ? players[1].color : players[2].color);
       }
       point.OriginalOwner = newOwner; // Update the original owner for future reference
-      if (pawnsOnPoints[point.id]) {
-        pawnsOnPoints[point.id].owner = newOwner; // Update the owner in pawnsOnPoints as well
-      }
+      
     }
   });
 }
@@ -128,27 +130,51 @@ function checkCountryOwnership(point) {
 }
 // Обработчик на събития за избиране на точка
 function selectPoint(pointId) {
-  if (captureOptions.length > 0) {
-    handleCaptureChoice(pointId);
-    return;
-  }
-
-  console.log(`Точка избрана: ${pointId}`);
-  if (!isMovingPhase) {
-    placePawns(pointId);
-  } else {
-    if (!selectedStartPoint) {
-      selectedStartPoint = pointId;
-      alert(`Сега изберете дестинацията.`);
-    } else {
-      const destinationPoint = pointId;
-      if (selectedStartPoint === destinationPoint) {
-        alert("Избрахте една и съща точка. Изберете друга точка за дестинация");
-        selectedStartPoint = null;
-        return;
+  if(startSentOver)
+    {
+      if(pawnsSentOver <= pawnsGrrr)
+        {
+          pawnsSentOver+=1;
+          pawnsOnPoints[pointId].pawns-=1;
+          updatePointDisplay(pointId);
+          if(pawnsSentOver===pawnsGrrr)
+          {
+            pawnsSentOver=0;
+        startSentOver=false;
+        isACapitalBeingAttacked=false;
+        switchTurn();
+          }
+        }
+      else{
+        pawnsSentOver=0;
+        startSentOver=false;
+        isACapitalBeingAttacked=false;
+        switchTurn();
       }
-      movePawns(selectedStartPoint, destinationPoint);
-      selectedStartPoint = null;
+    }
+  else {
+    if (captureOptions.length > 0) {
+      handleCaptureChoice(pointId);
+      return;
+    }
+
+    console.log(`Точка избрана: ${pointId}`);
+    if (!isMovingPhase) {
+      placePawns(pointId);
+    } else {
+      if (!selectedStartPoint) {
+        selectedStartPoint = pointId;
+        alert(`Сега изберете дестинацията.`);
+      } else {
+        const destinationPoint = pointId;
+        if (selectedStartPoint === destinationPoint) {
+          alert("Избрахте една и съща точка. Изберете друга точка за дестинация");
+          selectedStartPoint = null;
+          return;
+        }
+        movePawns(selectedStartPoint, destinationPoint);
+        selectedStartPoint = null;
+      }
     }
   }
 }
@@ -293,12 +319,14 @@ function movePawns(startPointId, destinationPointId) {
       let CountryOfTheCapital = ConqueredCapital.country;
       changeCountryOwnership(CountryOfTheCapital, atacker);
       let pawnsToBePlaced = Math.ceil(maxPawnsPerPlayer / players[atacker].capitalsNum); // Колко пула трябва да бъдат предадени
+      pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
       updatePointDisplay(ConqueredCapital.id);
-      console.log("Heloooo");
+      startSentOver=true;
     }
-    isACapitalBeingAttacked=false;
-    switchTurn();
+    else {
+      switchTurn();
+    }
   }
 }
 // Функция за обработка на избора на точка за кацане при улавяне
@@ -329,12 +357,14 @@ function handleCaptureChoice(pointId) {
       let CountryOfTheCapital = ConqueredCapital.country;
       changeCountryOwnership(CountryOfTheCapital, atacker);
       let pawnsToBePlaced = Math.ceil(maxPawnsPerPlayer / players[atacker].capitalsNum); // Колко пула трябва да бъдат предадени
+      pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
       updatePointDisplay(ConqueredCapital.id);
-      console.log("Heloooo");
+      startSentOver=true;
     }
-    isACapitalBeingAttacked=false;
-    switchTurn();
+    else {
+      switchTurn();
+    }
   }
 }
 
