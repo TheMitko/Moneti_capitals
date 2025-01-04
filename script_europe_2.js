@@ -136,6 +136,8 @@ function selectPoint(pointId) {
       if (pawnsOnPoints[pointId].owner === defender && pawnsOnPoints[pointId].pawns !== 0) {
         pawnsSentOver += 1;
         pawnsOnPoints[pointId].pawns -= 1;
+        playerPawnsCount[defender]-=1;
+        updatePlayerPawnsCount();
         if(pawnsOnPoints[pointId].pawns === 0) {pawnsOnPoints[pointId].owner=null;}
         updatePointDisplay(pointId);
         if (pawnsSentOver === pawnsGrrr) {
@@ -338,6 +340,15 @@ function movePawns(startPointId, destinationPointId) {
       let pawnsToBePlaced = Math.ceil(maxPawnsPerPlayer / players[atacker].capitalsNum); // Колко пула трябва да бъдат предадени
       pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
+      console.log("Trqbva da se postavqt" + pawnsToBePlaced);
+      console.log("atacker sega ima" + playerPawnsCount[atacker]);
+      
+      let AddittionalSumThing=parseInt(playerPawnsCount[atacker]) + parseInt(pawnsToBePlaced);
+      console.log("sumata" + parseInt(AddittionalSumThing));
+      playerPawnsCount[atacker]=parseInt(AddittionalSumThing);
+      
+      console.log("veche ima" + playerPawnsCount[atacker]);
+      updatePlayerPawnsCount();
       updatePointDisplay(ConqueredCapital.id);
       alert("Изберете " + pawnsGrrr +  " пула, които да предадете!");
       startSentOver=true;
@@ -385,6 +396,15 @@ function handleCaptureChoice(pointId) {
       let pawnsToBePlaced = Math.ceil(maxPawnsPerPlayer / players[atacker].capitalsNum); // Колко пула трябва да бъдат предадени
       pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
+      console.log("Trqbva da se postavqt" + pawnsToBePlaced);
+      console.log("atacker sega ima" + playerPawnsCount[atacker]);
+      
+      let AddittionalSumThing=parseInt(playerPawnsCount[atacker]) + parseInt(pawnsToBePlaced);
+      console.log("sumata" + parseInt(AddittionalSumThing));
+      playerPawnsCount[atacker]=parseInt(AddittionalSumThing);
+      
+      console.log("veche ima" + playerPawnsCount[atacker]);
+      updatePlayerPawnsCount();
       updatePointDisplay(ConqueredCapital.id);
       alert("Изберете " + pawnsGrrr +  " пула, които да предадете!");
       startSentOver=true;
@@ -537,4 +557,3 @@ function switchTurn() {
 logPointsData();
 renderMapElements();
 updatePlayerPawnsCount();
-
