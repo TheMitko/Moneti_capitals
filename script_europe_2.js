@@ -130,28 +130,40 @@ function checkCountryOwnership(point) {
 }
 // Обработчик на събития за избиране на точка
 function selectPoint(pointId) {
-  if(startSentOver)
-    {
-      if(pawnsSentOver <= pawnsGrrr)
-        {
-          pawnsSentOver+=1;
-          pawnsOnPoints[pointId].pawns-=1;
-          updatePointDisplay(pointId);
-          if(pawnsSentOver===pawnsGrrr)
-          {
-            pawnsSentOver=0;
-        startSentOver=false;
-        isACapitalBeingAttacked=false;
-        switchTurn();
-          }
+  if (startSentOver) {
+    if (pawnsSentOver <= pawnsGrrr) {
+      
+      if (pawnsOnPoints[pointId].owner === defender && pawnsOnPoints[pointId].pawns !== 0) {
+        pawnsSentOver += 1;
+        pawnsOnPoints[pointId].pawns -= 1;
+        if(pawnsOnPoints[pointId].pawns === 0) {pawnsOnPoints[pointId].owner=null;}
+        updatePointDisplay(pointId);
+        if (pawnsSentOver === pawnsGrrr) {
+          pawnsSentOver = 0;
+          startSentOver = false;
+          isACapitalBeingAttacked = false;
+          switchTurn();
         }
-      else{
-        pawnsSentOver=0;
-        startSentOver=false;
-        isACapitalBeingAttacked=false;
-        switchTurn();
       }
+      else if (pawnsOnPoints[pointId].pawns < 1) {
+        alert("Изберете точка, на която има пулове");
+        pointId = null;
+        return;
+      }
+      else if (pawnsOnPoints[pointId].owner !== defender) {
+        alert("Изберете точка с ваши пулове");
+        pointId = null;
+        return;
+      }
+      
     }
+    else {
+      pawnsSentOver = 0;
+      startSentOver = false;
+      isACapitalBeingAttacked = false;
+      switchTurn();
+    }
+  }
   else {
     if (captureOptions.length > 0) {
       handleCaptureChoice(pointId);
@@ -238,6 +250,11 @@ function movePawns(startPointId, destinationPointId) {
   const startPoint = pointsData.find(p => p.id === startPointId);
   const destinationPoint = pointsData.find(p => p.id === destinationPointId);
 
+  if (pawnsOnPoints[startPointId].pawns <= 0) {
+    alert("Няма достатъчно пулове.");
+    return;
+}
+
   if (!startPoint || !destinationPoint) {
     alert("Избрана е невалидна точка.");
     return;
@@ -313,7 +330,7 @@ function movePawns(startPointId, destinationPointId) {
 
   // Превключване на редовете между играчите
   if (!X || (X && Y)) {
-    if (isACapitalBeingAttacked) {
+    if (isACapitalBeingAttacked  && checkCapitalsOwnership(currentPlayer).underAttack) {
       alert("Поздравления! Успешно изгубихте столица и войска!");
       let ConqueredCapital = checkCapitalsOwnership(defender).capital;
       let CountryOfTheCapital = ConqueredCapital.country;
@@ -322,7 +339,16 @@ function movePawns(startPointId, destinationPointId) {
       pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
       updatePointDisplay(ConqueredCapital.id);
+      alert("Изберете " + pawnsGrrr +  " пула, които да предадете!");
       startSentOver=true;
+      
+    }
+    else if(isACapitalBeingAttacked)
+    {
+      alert("Поздравления! Успешно защитихте столицата си")
+      startSentOver = false;
+      isACapitalBeingAttacked = false;
+      switchTurn();
     }
     else {
       switchTurn();
@@ -351,7 +377,7 @@ function handleCaptureChoice(pointId) {
   Y = true; // Поставяне на Y на true след избора
 
   if (X && Y) {
-    if (isACapitalBeingAttacked) {
+    if (isACapitalBeingAttacked && checkCapitalsOwnership(currentPlayer).underAttack) {
       alert("Поздравления! Успешно изгубихте столица и войска!");
       let ConqueredCapital = checkCapitalsOwnership(defender).capital;
       let CountryOfTheCapital = ConqueredCapital.country;
@@ -360,8 +386,16 @@ function handleCaptureChoice(pointId) {
       pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
       updatePointDisplay(ConqueredCapital.id);
+      alert("Изберете " + pawnsGrrr +  " пула, които да предадете!");
       startSentOver=true;
     }
+    else if(isACapitalBeingAttacked)
+      {
+        alert("Поздравления! Успешно защитихте столицата си")
+        startSentOver = false;
+        isACapitalBeingAttacked = false;
+        switchTurn();
+      }
     else {
       switchTurn();
     }
