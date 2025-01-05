@@ -154,9 +154,8 @@ svg {
 {
     font-size: 30px;
 }
-.pawns-count {
+.pawns-count, .capitals-count {
     position: relative;
-    
     font-size: 10px;
     background: linear-gradient(to bottom, #00FF40, #05718c);
     border: 2px solid #ccc; /* Лека рамка за акцент */
@@ -164,9 +163,10 @@ svg {
     padding: 10px 20px; /* Вътрешни отстояния за простор */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Мек сянка за дълбочина */
     color: #333; /* Тъмен текст за четимост */
+    margin-top: 20px;
 }
 
-.pawns-count p {
+.pawns-count p, .capitals-count p {
     margin: 10px 0; /* Пространство между параграфите */
     font-weight: bold; /* Изтънен текст */
     font-size: 21.5px; /* По-голям шрифт за по-ясен изглед */
