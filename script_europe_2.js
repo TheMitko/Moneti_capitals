@@ -81,6 +81,16 @@ function changeCountryOwnership(country, newOwner) {
       console.log(`Играч ${newOwner} взе контрол над ${country}`);
     }
   });
+
+  // Update the number of capitals owned
+  players[newOwner].capitalsNum += 1;
+  players[defender].capitalsNum -= 1;
+  updateCapitalsCount();
+}
+
+function updateCapitalsCount() {
+  document.getElementById("player1-capitals").textContent = players[1].capitalsNum;
+  document.getElementById("player2-capitals").textContent = players[2].capitalsNum;
 }
 
 function getPointCountry(pointId) {
@@ -103,6 +113,7 @@ function updatePlayerInfoDisplay() {
 }
 
 updatePlayerInfoDisplay(); // Извикване на функцията за първоначално обновяване на дисплея
+updateCapitalsCount(); // Initial update of the capitals count
 
 function getCurrentPlayerName() {
   return playerNames[currentPlayer - 1] || `играч ${currentPlayer}`;
@@ -485,7 +496,7 @@ function updatePointDisplay(pointId) {
       circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : "gray")) : "gray"); console.log(checkCountryOwnership(point)); // Установяване на цвета на кръга
     }
     console.log(`Точката ${pointId} е скрита, защото няма пулове.`);
-  } 
+  }
 }
 
 // Функция за рендиране на точки, връзки и добавяне на пулове
