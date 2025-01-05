@@ -89,8 +89,8 @@ function changeCountryOwnership(country, newOwner) {
 }
 
 function updateCapitalsCount() {
-  document.getElementById("player1-capitals").textContent = players[1].capitalsNum;
-  document.getElementById("player2-capitals").textContent = players[2].capitalsNum;
+    document.getElementById("player1-capitals-info").innerHTML = `${playerNames[0] || 'Играч 1'}: <span id="player1-capitals" class="player1-capitals">${players[1].capitalsNum}</span> столици`;
+    document.getElementById("player2-capitals-info").innerHTML = `${playerNames[1] || 'Играч 2'}: <span id="player2-capitals" class="player2-capitals">${players[2].capitalsNum}</span> столици`;
 }
 
 function getPointCountry(pointId) {
