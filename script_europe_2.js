@@ -77,7 +77,8 @@ function changeCountryOwnership(country, newOwner) {
         circle.setAttribute("fill", newOwner === 1 ? players[1].color : players[2].color);
       }
       point.OriginalOwner = newOwner; // Update the original owner for future reference
-      
+      players[newOwner].countries.push(country);
+      console.log(`Играч ${newOwner} взе контрол над ${country}`);
     }
   });
 }
@@ -458,7 +459,7 @@ function updatePointDisplay(pointId) {
     circle.setAttribute("cx", point.x);
     circle.setAttribute("cy", point.y);
     circle.setAttribute("r", point.capital ? 22 : 16); // Увеличаване на радиуса на кръга
-    circle.setAttribute("fill", pawnsOnPoints[pointId].owner === 1 ? players[1].color : players[2].color);
+    circle.setAttribute("fill", pawnsOnPoints[pointId].owner === 1 ? players[1].color : players[2].color); console.log(pawnsOnPoints[pointId].owner); // Установяване на цвета на кръга
     circle.style.cursor = "pointer"; // Настройка на курсора на pointer
 
     group.appendChild(circle);
@@ -481,11 +482,10 @@ function updatePointDisplay(pointId) {
     const circle = document.getElementById(point.id);
     if (circle) {
       circle.setAttribute("r", point.capital ? 22 : 7); // Начален радиус
-      circle.setAttribute("fill", pawnsOnPoints[pointId].owner === 1 ? players[1].color : players[2].color);
-      circle.style.cursor = "pointer"; // Настройка на курсора на pointer
+      circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : "gray")) : "gray"); console.log(checkCountryOwnership(point)); // Установяване на цвета на кръга
     }
     console.log(`Точката ${pointId} е скрита, защото няма пулове.`);
-  }
+  } 
 }
 
 // Функция за рендиране на точки, връзки и добавяне на пулове
