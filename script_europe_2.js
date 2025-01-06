@@ -89,8 +89,8 @@ function changeCountryOwnership(country, newOwner) {
 }
 
 function updateCapitalsCount() {
-    document.getElementById("player1-capitals-info").innerHTML = `${playerNames[0] || 'Играч 1'}: <span id="player1-capitals" class="player1-capitals">${players[1].capitalsNum}</span> столици`;
-    document.getElementById("player2-capitals-info").innerHTML = `${playerNames[1] || 'Играч 2'}: <span id="player2-capitals" class="player2-capitals">${players[2].capitalsNum}</span> столици`;
+    document.getElementById("player1-capitals-info").innerHTML = `столици: <span id="player1-capitals" class="player1-capitals">${players[1].capitalsNum}</span>`;
+    document.getElementById("player2-capitals-info").innerHTML = `столици: <span id="player2-capitals" class="player2-capitals">${players[2].capitalsNum}</span>`;
 }
 
 function getPointCountry(pointId) {
@@ -102,14 +102,18 @@ function getPointCountry(pointId) {
 }
 
 function updatePlayerPawnsCount() {
-  document.querySelector(".player1-pawns").textContent = playerPawnsCount[1];
-  document.querySelector(".player2-pawns").textContent = playerPawnsCount[2];
+    document.getElementById("player1-pawns").textContent = playerPawnsCount[1];
+    document.getElementById("player2-pawns").textContent = playerPawnsCount[2];
 }
 
 // Обновяване на текста в таблото с имената на играчите
 function updatePlayerInfoDisplay() {
-  document.getElementById("player1-info").innerHTML = `${playerNames[0] || 'Играч 1'}: <span id="player1-pawns" class="player1-pawns">0</span> пулове`;
-  document.getElementById("player2-info").innerHTML = `${playerNames[1] || 'Играч 2'}: <span id="player2-pawns" class="player2-pawns">0</span> пулове`;
+    document.getElementById("player1-name").textContent = playerNames[0] || 'Играч 1';
+    document.getElementById("player2-name").textContent = playerNames[1] || 'Играч 2';
+    document.getElementById("player1-capitals-info").innerHTML = `столици: <span id="player1-capitals" class="player1-capitals">${players[1].capitalsNum}</span>`;
+    document.getElementById("player1-info").innerHTML = `пулове: <span id="player1-pawns" class="player1-pawns">${playerPawnsCount[1]}</span>`;
+    document.getElementById("player2-capitals-info").innerHTML = `столици: <span id="player2-capitals" class="player2-capitals">${players[2].capitalsNum}</span>`;
+    document.getElementById("player2-info").innerHTML = `пулове: <span id="player2-pawns" class="player2-pawns">${playerPawnsCount[2]}</span>`;
 }
 
 updatePlayerInfoDisplay(); // Извикване на функцията за първоначално обновяване на дисплея
