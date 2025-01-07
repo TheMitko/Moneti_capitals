@@ -391,9 +391,11 @@ function handleCaptureChoice(pointId) {
 
   captureOptions.forEach(option => {
     const circle = document.getElementById(option);
-    if (circle) {
+    const point = pointsData.find(p => p.id === option);
+    if (circle && point) {
       circle.setAttribute("r", 7); // Връщане към нормален радиус
-      circle.setAttribute("fill", pawnsOnPoints[pointId].owner === 1 ? players[1].color : players[2].color);
+      circle.setAttribute("fill", point.country ? (checkCountryOwnership(point) === 1 ? players[1].color : (checkCountryOwnership(point) === 2 ? players[2].color : "gray")) : "gray");
+      console.log(checkCountryOwnership(point));
     }
   });
 
@@ -543,6 +545,16 @@ function renderMapElements() {
 
 // Превключване на редовете между играчите
 function switchTurn() {
+  // Check if any player has 0 pawns and open the corresponding win page
+  if (playerPawnsCount[1] === 0) {
+    window.location.href = "player2_win.html";
+    return;
+  } 
+  if (playerPawnsCount[2] === 0) {
+    window.location.href = "player1_win.html";
+    return;
+  }
+
   currentPlayer = currentPlayer === 1 ? 2 : 1;
   alert(`Сега е ред на ${getCurrentPlayerName()} да мести пуловете си.`);
 
