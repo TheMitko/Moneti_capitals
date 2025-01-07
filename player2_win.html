@@ -50,6 +50,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <script>
+        window.onload = function() {
+            const gameData = JSON.parse(localStorage.getItem("gameData")) || { playerNames: ["Player 1", "Player 2"] };
+            const playerName = gameData.playerNames[1] || "Player 2";
+            document.querySelector('.win-title').textContent = `${playerName} Wins! 🏆`;
+        }
+    </script>
 </head>
 <body>
     <div class="win-container">
