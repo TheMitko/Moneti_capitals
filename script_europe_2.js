@@ -356,6 +356,20 @@ function movePawns(startPointId, destinationPointId) {
       let pawnsToBePlaced = Math.ceil(maxPawnsPerPlayer / players[atacker].capitalsNum); // Колко пула трябва да бъдат предадени
       pawnsGrrr=pawnsToBePlaced;
       pawnsOnPoints[ConqueredCapital.id].pawns += pawnsToBePlaced;
+
+      if(atacker===1) {
+        if(playerPawnsCount[1] < pawnsToBePlaced) { 
+          window.location.href = "player2_win.html";
+          return;
+        }
+      }
+      else if(atacker===2) {
+        if(playerPawnsCount[2] < pawnsToBePlaced) { 
+          window.location.href = "player1_win.html";
+          return;
+        }
+      }
+
       console.log("Trqbva da se postavqt" + pawnsToBePlaced);
       console.log("atacker sega ima" + playerPawnsCount[atacker]);
       
